@@ -1,92 +1,294 @@
 ﻿using System;
 
-class Program
+
+namespace _20181112MethodsNamuDarbai
 {
-
-    static void Main()
+    class Program
     {
-        // TODO : keiskite FROM..TO skaicius pagal tai kiek spesite padaryt uzduociu. (-19...19, -99..99, ir tt.)
-        // min skaicius 
-        const int FROM_NUMBER = -9;
-        // max skaicius 
-        const int TO_NUMBER = 9;
-
-        string inputString = "";
-        int inputNumber = 0;
-
-        Console.Write("Sveiki!");
-        while (inputString != " ")
+        static void Main(string[] args)
         {
-            Console.Write("\n(Enter SPACE to exit.)\nIveskite skaiciu:");
-            inputString = Console.ReadLine();
-            if (checkIfGoodNumber(inputString))
+            Console.Write("Enter Number: ");
+            String StartNumber = Console.ReadLine();
+            Boolean Isnumeric = CheckIfNumber(StartNumber);
+            String Zero = "0";
+
+            if (StartNumber == Zero)
             {
-                Console.WriteLine("Skaicius teisingas!");
-                inputNumber = Convert.ToInt32(inputString);
-                if (checkIfNumberInRange(FROM_NUMBER, TO_NUMBER, inputNumber))
+                Console.WriteLine("Nulis");
+            }
+
+            if (Isnumeric)
+            {
+                int ConvertedStartnumber = ConvertToInt(StartNumber);
+                Boolean Range = CheckRange(ConvertedStartnumber);
+                if (Range)
                 {
-                    Console.WriteLine("Skaicius {0} zodziais: {1}", inputNumber, changeNumberToText(inputNumber));
+                    Boolean isNegative = ConvertedStartnumber.ToString().Contains("-");
+                    if (isNegative)
+                    {
+                        String NegativeNumber = ConvertedStartnumber.ToString().Substring(1);
+                        ConvertedStartnumber = Convert.ToInt32(NegativeNumber);
+                        String Numeros = ConvertToTextFULL(NegativeNumber);
+                        Console.WriteLine("Minus " + Numeros);
+                    }
+                    else
+                    {
+                        String Numeros = ConvertToTextFULL(StartNumber);
+                        Console.WriteLine(Numeros);
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Blogas skaicius {0}, prasau ivesti skaiciu reziuose: {1}..{2}", inputString, FROM_NUMBER, TO_NUMBER);
+                    Console.WriteLine("Number is not in Range");
                 }
             }
             else
             {
-                Console.WriteLine("Ivesti duomenys:{0} nera skaicius!", inputString);
+                Console.WriteLine("String is not a number");
+            }
+            Console.ReadLine();
+        }
+        static Boolean CheckIfNumber(String isnumber)
+        {
+            foreach (var item in isnumber)
+            {
+                if (!char.IsDigit(item) && item != '-')
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        static int ConvertToInt(String Startnumber)
+        {
+            int number = Convert.ToInt32(Startnumber);
+            return number;
+        }
+        static Boolean CheckRange(int number)
+        {
+            if (number >= -999999 && number <= 999999)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
+        static String ConvertToTextOnes(String number)
+        {
+            String NumberInWords = "";
+            int _number = Convert.ToInt32(number);
+            switch (_number)
+            {
+                case 1:
+                    NumberInWords = "Vienas";
+                    break;
+                case 2:
+                    NumberInWords = "Du";
+                    break;
+                case 3:
+                    NumberInWords = "Trys";
+                    break;
+                case 4:
+                    NumberInWords = "Keturi";
+                    break;
+                case 5:
+                    NumberInWords = "Penki";
+                    break;
+                case 6:
+                    NumberInWords = "Sesi";
+                    break;
+                case 7:
+                    NumberInWords = "Septyni";
+                    break;
+                case 8:
+                    NumberInWords = "Astuoni";
+                    break;
+                case 9:
+                    NumberInWords = "Devyni";
+                    break;
+                default:
+                    break;
+            }
+            return NumberInWords;
+        }
+        static String ConvertToTextTens(String number)
+        {
+            if (number.Substring(0, 1) == "0")
+            {
+                number = number.TrimStart('0');
+            }
+            int _number = Convert.ToInt32(number);
+            String NumberInWords = "";
+            switch (_number)
+            {
+                case 10:
+                    NumberInWords = "Desimt";
+                    break;
+                case 11:
+                    NumberInWords = "Vienuolika";
+                    break;
+                case 12:
+                    NumberInWords = "Dvylika";
+                    break;
+                case 13:
+                    NumberInWords = "Trylika";
+                    break;
+                case 14:
+                    NumberInWords = "Keturiolika";
+                    break;
+                case 15:
+                    NumberInWords = "Penkiolika";
+                    break;
+                case 16:
+                    NumberInWords = "Sesiolioka";
+                    break;
+                case 17:
+                    NumberInWords = "Septyniolika";
+                    break;
+                case 18:
+                    NumberInWords = "Astuoniolika";
+                    break;
+                case 19:
+                    NumberInWords = "Devyniolika";
+                    break;
+                case 20:
+                    NumberInWords = "Dvidesimt";
+                    break;
+                case 30:
+                    NumberInWords = "Trisdesimt";
+                    break;
+                case 40:
+                    NumberInWords = "Keturiasdesimt";
+                    break;
+                case 50:
+                    NumberInWords = "Penkiasdesimt";
+                    break;
+                case 60:
+                    NumberInWords = "Sesiasdesimt";
+                    break;
+                case 70:
+                    NumberInWords = "Septyniasdesimt";
+                    break;
+                case 80:
+                    NumberInWords = "Astuoniasdesimt";
+                    break;
+                case 90:
+                    NumberInWords = "Devyniasdesimt";
+                    break;
+                default:
+                    String dealwith0 = number.Substring(1);
+                    if (String.IsNullOrEmpty(dealwith0))
+                    {
+                        NumberInWords = ConvertToTextOnes(number.Substring(0));
+                        break;
+                    }
+                    NumberInWords = ConvertToTextTens(number.Substring(0, 1) + "0") + " " + ConvertToTextOnes(number.Substring(1));
+                    break;
+            }
+            return NumberInWords;
+        }
+        static String ConvertToTextHundrets(String number)
+        {
+            int _number = Convert.ToInt32(number);
+            String NumberInWords = "";
+            if (number.Substring(0, 1) == "1")
+            {
+                if (number == "100")
+                {
+                    NumberInWords = "Simtas";
+                }
+                else
+                {
+                    NumberInWords = "Simtas" + " " + ConvertToTextTens(number.Substring(1));
+                }
+            }
+            else if (number.Substring(0, 1) == "0")
+            {
+                NumberInWords = ConvertToTextTens(number.Substring(1));
+            }
+            else
+            {
+                NumberInWords = ConvertToTextOnes(number.Substring(0, 1)) + " Simtai " + ConvertToTextTens(number.Substring(1));
+            }
+            return NumberInWords;
+        }
+        static String ConvertToTextTousends(String number)
+        {
+            int _number = Convert.ToInt32(number);
+            String NumberInWords = "";
+            if (number.Substring(0, 1) == "1")
+            {
+                NumberInWords = "Tukstantis" + " " + ConvertToTextHundrets(number.Substring(1));
+            }
+            else
+            {
+                NumberInWords = ConvertToTextOnes(number.Substring(0, 1)) + " " + "Tukstanciai" + " " + ConvertToTextHundrets(number.Substring(1));
+            }
+            return NumberInWords;
+        }
+        static String ConvertToTextTenThousends(String number)
+        {
+            int _number = Convert.ToInt32(number);
+            String NumberInWords = "";
+            NumberInWords = ConvertToTextTens(number.Substring(0, 2)) + " " + "Tukstanciu" + " " + ConvertToTextHundrets(number.Substring(2));
+            return NumberInWords;
+        }
+        static String ConvertToTextHundThousends(String number)
+        {
+            int _number = Convert.ToInt32(number);
+            String NumberInWords = "";
+            if (number.Substring(0, 1) == "1" && number.Substring(2, 1) == "1")
+            {
+                NumberInWords = ConvertToTextHundrets(number.Substring(0, 3)) + " " + "Tukstantis" + " " + ConvertToTextHundrets(number.Substring(3));
+            }
+            else if (number.Substring(2, 1) == "0")
+            {
+                if (number == "100000")
+                {
+                    NumberInWords = "Simtas Tukstanciu";
+                }
+                else
+                {
+                    NumberInWords = ConvertToTextHundrets(number.Substring(0, 3)) + " " + "Tukstantciu" + " " + ConvertToTextHundrets(number.Substring(3));
+                }
+            }
+            else
+            {
+                NumberInWords = ConvertToTextHundrets(number.Substring(0, 3)) + " " + "Tukstanciai" + " " + ConvertToTextHundrets(number.Substring(3, 3));
+            }
+            return NumberInWords;
+        }
 
-        Console.WriteLine("\nAciu uz demesi, viso gero.");
-        Console.ReadKey();
+        static String ConvertToTextFULL(String number)
+        {
+            int length = number.ToString().Length;
+            String NumberInWords = "";
+            switch (length)
+            {
+                case 1:
+                    NumberInWords = ConvertToTextOnes(number);
+                    break;
+                case 2:
+                    NumberInWords = ConvertToTextTens(number);
+                    break;
+                case 3:
+                    NumberInWords = ConvertToTextHundrets(number);
+                    break;
+                case 4:
+                    NumberInWords = ConvertToTextTousends(number);
+                    break;
+                case 5:
+                    NumberInWords = ConvertToTextTenThousends(number);
+                    break;
+                case 6:
+                    NumberInWords = ConvertToTextHundThousends(number);
+                    break;
+                default:
+                    break;
+            }
+            return NumberInWords;
+        }
     }
-
-    // bendra funkcija apjungti visom funkcijom kurias jus sukursit.
-    static string changeNumberToText(int number)
-    {
-        // TODO : pakeiskite sita funkcija pagal savo poreiki. (tiek kiek skaiciu spesite apdorot.)
-        return changeOnesToText(number);
-    }
-
-    // funkcija gauna string skaiciu, patikrina ar skaicius teisingu formatu. Pvz: "123", "-123" grazina true. "12a3", "1-23" grazina false.
-    static bool checkIfGoodNumber(string dataToCheck)
-    {
-        throw new NotImplementedException("TODO: grazinkite true, jei tekstas yra teisingas skaicius.");
-    }
-
-    // funkcija gauna true jei skaicius checkNumber yar tarp fromNumber ir toNumber (imtinai)
-    private static bool checkIfNumberInRange(int fromNumber, int toNumber, int checkNumber)
-    {
-        throw new NotImplementedException("TODO: Patikrinkite ar checkNumber yar tarp skaiciu fromNumber,  toNumber");
-    }
-
-    // funkcija gauna int skaiciu, pakeicia ji i string teksta kuri zodziais nusako skaiciu. PVZ: -1684542 turi grazint - "minus vienas milijonas sesi simtai astuoniasdesimt keturi tukstanciai penki simtai keturiasdiasimt du"
-    static string changeOnesToText(int number)
-    {
-        throw new NotImplementedException("TODO: grazinkite skaiciu -9...9 zodziais.");
-    }
-
-    // TODO : sukurti funkcija kuri grazina skaiciu -19...19 zodziais - changeTeensToText
-
-    // TODO : sukurti funkcija kuri grazina skaiciu -99...99 zodziais - changeTensToText
-
-    // TODO : sukurti funkcija kuri grazina skaiciu -999...999 zodziais - changeHundredsToText
-
-    // TODO : sukurti funkcija kuri grazina skaiciu -9999...9999 zodziais - changeThousandsToText
-
-    // TODO : sukurti funkcija kuri grazina skaiciu -9999999...9999999 zodziais - changeMillionsToText
-
-    // TODO : sukurti funkcija kuri grazina skaiciu -9999999999...9999999999 zodziais - changeBilllionsToText
-
-
-
-    //Skaiciai zodziais:  
-    // "minus"; 
-    // "nulis", "vienas", "du", "trys", "keturi", "penki", "sesi", "septyni", "astuoni", "devyni"; 
-    // "desimt", "vienualika", "dvylika", "trylika", "keturiolika", "penkiolika", "sesiolika", "septyniolika", "astuoniolika", "devyniolika"; 
-    // "dvidesimt", "trisdesimt", "keturiasdesimt", "penkiasdesimt", "sesiasdesimt", "septyniasdesimt", "astuoniasdesimt", "devyniasdesimt"; 
-    // "simtas", "tukstantis", "milijonas", "milijardas"; 
-    // "simtai", "tukstanciai", "milijonai", "milijardai"; 
-    // "simtu", "tukstanciu", "milijonu", "milijardu"; 
 }
